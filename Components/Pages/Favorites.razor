@@ -1,0 +1,300 @@
+@page "/Favorites"
+@rendermode InteractiveServer
+@attribute [Authorize]
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <h3>Favorite Movies</h3>
+            <div class="row">
+                @foreach(var item in FavoriteMovies){
+                    var movie = item.Movie;
+                    if(movie != null){
+                        <div class="col-6 container my-4">
+                            <div class="card shadow">
+                                <div class="card-header bg-primary text-white">
+                                    <h4>@(movie?.Name ?? "Unknown Movie")</h4>
+                                    <h6 class="text-light">Language: @(movie?.Language ?? "Unknown")</h6>
+                                </div>
+                                @if(movie?.Image != null && !String.IsNullOrEmpty(movie.Image.Original)){
+                                    <img src="@movie.Image.Original" class="card-img-top" alt="@(movie.Name ?? "Undefined")">
+                                }else{
+                                    <img src="/img/notfound.jpg" class="card-img-top" alt="@(movie?.Name ?? "Undefined")">
+                                }
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6>Genres</h6>
+                                            <ul class="list-unstyled">
+                                                @if (movie?.Genres != null && movie.Genres.Any())
+                                                {
+                                                    @foreach (var genre in movie.Genres)
+                                                    {
+                                                        <li class="text-muted">@genre</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li class="text-muted">No Genres Available</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Schedule</h6>
+                                            <p class="text-muted">Time: @(movie?.Schedule?.Time ?? "N/A")</p>
+                                            <p class="text-muted">
+                                                Days: 
+                                                @if (movie?.Schedule?.Days != null && movie.Schedule.Days.Any())
+                                                {
+                                                    @string.Join(", ", movie.Schedule.Days)
+                                                }
+                                                else
+                                                {
+                                                    <p>No Days Available</p>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6>Status</h6>
+                                            <p class="text-muted">@(movie?.Status ?? "Unknown")</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Runtime</h6>
+                                            <p class="text-muted">@(movie?.Runtime?.ToString() ?? "N/A" ) minutes</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6>Premiered</h6>
+                                            <p class="text-muted">@(movie?.Premiered ?? "Unknown")</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Ended</h6>
+                                            <p class="text-muted">@(movie?.Ended ?? "Ongoing")</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6>Rating</h6>
+                                            <p class="text-muted">@(movie?.Rating?.Average?.ToString("F1") ?? "No Rating Available")</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Network</h6>
+                                            <p class="text-muted">@(movie?.Network?.Name ?? "Unknown")</p>
+                                            <p class="text-muted">
+                                                Country: @(movie?.Network?.Country?.Name ?? "Unknown") (@(movie?.Network?.Country?.Code ?? "N/A"))
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <h6>Summary</h6>
+                                            <p class="text-muted">@((MarkupString)(movie?.Summary ?? "No Summary Available"))</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6>External Links</h6>
+                                            <ul class="list-unstyled">
+                                                @if (!string.IsNullOrEmpty(movie?.Externals?.Imdb))
+                                                {
+                                                    <li><a href="https://www.imdb.com/title/@movie.Externals.Imdb" target="_blank">IMDb</a></li>
+                                                }
+                                                @if (movie?.Externals?.Tvrage != null)
+                                                {
+                                                    <li>TVRage ID: @movie.Externals.Tvrage</li>
+                                                }
+                                                @if (movie?.Externals?.Thetvdb != null)
+                                                {
+                                                    <li>TheTVDB ID: @movie.Externals.Thetvdb</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Links</h6>
+                                            <p>
+                                                @if (!string.IsNullOrEmpty(movie?.Links?.Self?.Href))
+                                                {
+                                                    <a href="@movie.Links.Self.Href" target="_blank">Official Page</a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">No Official Page</span>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <span class="text-muted">Last Updated: @(movie?.Updated > 0 ? DateTimeOffset.FromUnixTimeSeconds(movie.Updated).ToString("g") : "Unknown")</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }   
+            </div>
+        </div>
+        <div class="col">
+            <h3>Favorite books</h3>
+            <div class="row">
+                @foreach(var item in FavoriteBooks){
+                    var book = item.Book;
+                    if(book != null){
+                        <div class="col-6 container my-4">
+                            <div class="card shadow">
+                                <div class="card-header bg-primary text-white">
+                                    <h4>@(book?.title ?? "Unknown Title")</h4>
+                                    <h6 class="text-light">@(!string.IsNullOrEmpty(book?.subtitle) ? book.subtitle : "No Subtitle Available")</h6>
+                                </div>
+                                @if(!String.IsNullOrEmpty(book?.cover_edition_key)){
+                                    <img src="https://covers.openlibrary.org/b/OLID/@book.cover_edition_key-L.jpg" class="card-img-top" alt="@book.title">
+                                }else{
+                                    <img src="/img/notfound.jpg" class="img-fluid rounded-start" alt="@book?.title">
+                                }
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h6>Authors</h6>
+                                            <ul class="list-unstyled">
+                                                @if (book?.author_name != null && book.author_name.Any())
+                                                {
+                                                    @foreach (var author in book.author_name)
+                                                    {
+                                                        <li class="text-muted"><i class="bi bi-person-fill"></i> @(author ?? "Unknown Author")</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li class="text-muted">No Authors Available</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Publisher(s)</h6>
+                                            <ul class="list-unstyled">
+                                                @if (book?.publisher != null && book.publisher.Any())
+                                                {
+                                                    @foreach (var publisher in book.publisher)
+                                                    {
+                                                        <li class="text-muted"><i class="bi bi-building"></i> @(publisher ?? "Unknown Publisher")</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li class="text-muted">No Publishers Available</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <h6>First Published</h6>
+                                            <p class="text-muted">@(book?.first_publish_year.ToString() ?? "N/A")</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>Number of Pages</h6>
+                                            <p class="text-muted">@(book?.number_of_pages_median.ToString() ?? "N/A")</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>Ratings</h6>
+                                            <p class="text-muted">
+                                                @if (book != null)
+                                                {
+                                                    @(book.ratings_average > 0 ? $"{book.ratings_average} / 5 (Total: {book.ratings_count})" : "No Ratings Available")
+                                                }
+                                                else
+                                                {
+                                                    <p>No Ratings Available</p>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <h6>Subjects</h6>
+                                            <ul class="list-inline">
+                                                @if (book?.subject != null && book.subject.Any())
+                                                {
+                                                    @foreach (var subject in book.subject)
+                                                    {
+                                                        <li class="list-inline-item badge bg-secondary">@subject</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li class="list-inline-item text-muted">No Subjects Available</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>ISBNs</h6>
+                                            <ul class="list-unstyled">
+                                                @if (book?.isbn != null && book.isbn.Any())
+                                                {
+                                                    @foreach (var isbn in book.isbn.Take(5))
+                                                    {
+                                                        <li class="text-muted">@isbn</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li class="text-muted">No ISBNs Available</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Languages</h6>
+                                            <ul class="list-unstyled">
+                                                @if (book?.language != null && book.language.Any())
+                                                {
+                                                    @foreach (var language in book.language)
+                                                    {
+                                                        <li class="text-muted">@language</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li class="text-muted">No Languages Available</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <span class="text-muted">
+                                        Edition Count: @(book?.edition_count.ToString() ?? "N/A") | Format(s): 
+                                        @(book?.format != null && book.format.Any() ? string.Join(", ", book.format) : "No Formats Available")
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code{
+    private List<Favorite> FavoriteBooks = new(), FavoriteMovies = new();
+    private string? UserId;
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;    
+    protected override async Task OnInitializedAsync(){
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(UserId))
+            {
+                FavoriteBooks = await searchBookDb.GetFavoritesAsync(UserId);
+                FavoriteMovies = await searchMovieDb.GetFavoritesAsync(UserId);
+            }
+        }
+    }
+}
