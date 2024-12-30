@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: clipser_secure_password_1234.
+      MARIADB_DATABASE: Clipser
+      MARIADB_USER: clipser
+      MARIADB_PASSWORD: clipser_secure_password_1234.
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb_data:/usr/src/Clipser/mysql
+
+  dotnet-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dotnet-app
+    depends_on:
+      - mariadb
+    ports:
+      - "5000:5000"
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=localhost;Database=Clipser;User=clipser;Password=clipser_secure_password_1234.;"
+    command: >
+      sh -c "dotnet ef database update && dotnet Clipser.dll"
+
+volumes:
+  mariadb_data:
