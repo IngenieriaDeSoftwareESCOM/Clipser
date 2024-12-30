@@ -1,0 +1,548 @@
+@page "/Search"
+@rendermode InteractiveServer
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Ingresa tu búsqueda" @onchange="async (e) => { Books = new(); Movies = new(); SearchString = string.Empty; await GetBooksByInput(e);}" aria-label="Ingresa tu búsqueda" aria-describedby="searchbutton">
+    <button class="btn btn-outline-warning" type="button" @onclick="async () => await GetApiResults()">Result not found? Click here</button>
+</div>
+<div class="container text-center">
+    @if(Fail){
+        <div class="text-center"><h3>Any result found, try with other name</h3></div>
+    }else if(Loading){
+        <div class="text-center my-6">
+            <div class="spinner-grow" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }else if(String.IsNullOrEmpty(SearchString)){
+        <div class="text-center"><h3>Search something</h3></div>
+    }else{
+        <div class="row">
+            <div class="col my-3">
+                <h2>Books found @Books.Count</h2>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    @foreach(var book in Books){
+                        <div class="col h-100">
+                            <div class="card">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        @if(!String.IsNullOrEmpty(book.cover_edition_key)){
+                                            <img src="https://covers.openlibrary.org/b/OLID/@book.cover_edition_key-L.jpg" class="img-fluid rounded-start" alt="@book.title">
+                                        }else{
+                                            <img src="/img/notfound.jpg" class="img-fluid rounded-start" alt="@book.title">
+                                        }
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@book.title</h5>
+                                            <h6 class="card-subtitle mb-2 text-body-secondary">@book.subtitle</h6>
+                                            <p class="card-text">Note: <span class='badge bg-@(book.ratings_average <= 3 ? "danger" : book.ratings_average >= 4.5 ? "success" : "warning")'>@book.ratings_average</span></p>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#bookInfoModal@(book.key.Replace('/', '_'))">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                                                    </svg>
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="bookInfoModal@(book.key.Replace('/', '_'))" tabindex="-1" aria-labelledby="bookInfoModal@(book.key.Replace('/', '_'))-Label" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-scrollable modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="bookInfoModal@(book.key.Replace('/', '_'))-Label">@book.title</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="container my-4">
+                                                                <div class="card shadow">
+                                                                    <div class="card-header bg-primary text-white">
+                                                                        <h4>@(book?.title ?? "Unknown Title")</h4>
+                                                                        <h6 class="text-light">@(!string.IsNullOrEmpty(book?.subtitle) ? book.subtitle : "No Subtitle Available")</h6>
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-md-6">
+                                                                                <h6>Authors</h6>
+                                                                                <ul class="list-unstyled">
+                                                                                    @if (book?.author_name != null && book.author_name.Any())
+                                                                                    {
+                                                                                        @foreach (var author in book.author_name)
+                                                                                        {
+                                                                                            <li class="text-muted"><i class="bi bi-person-fill"></i> @(author ?? "Unknown Author")</li>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <li class="text-muted">No Authors Available</li>
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <h6>Publisher(s)</h6>
+                                                                                <ul class="list-unstyled">
+                                                                                    @if (book?.publisher != null && book.publisher.Any())
+                                                                                    {
+                                                                                        @foreach (var publisher in book.publisher)
+                                                                                        {
+                                                                                            <li class="text-muted"><i class="bi bi-building"></i> @(publisher ?? "Unknown Publisher")</li>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <li class="text-muted">No Publishers Available</li>
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-md-4">
+                                                                                <h6>First Published</h6>
+                                                                                <p class="text-muted">@(book?.first_publish_year.ToString() ?? "N/A")</p>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <h6>Number of Pages</h6>
+                                                                                <p class="text-muted">@(book?.number_of_pages_median.ToString() ?? "N/A")</p>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <h6>Ratings</h6>
+                                                                                <p class="text-muted">
+                                                                                    @if (book != null)
+                                                                                    {
+                                                                                        @(book.ratings_average > 0 ? $"{book.ratings_average} / 5 (Total: {book.ratings_count})" : "No Ratings Available")
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <p>No Ratings Available</p>
+                                                                                    }
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-12">
+                                                                                <h6>Subjects</h6>
+                                                                                <ul class="list-inline">
+                                                                                    @if (book?.subject != null && book.subject.Any())
+                                                                                    {
+                                                                                        @foreach (var subject in book.subject)
+                                                                                        {
+                                                                                            <li class="list-inline-item badge bg-secondary">@subject</li>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <li class="list-inline-item text-muted">No Subjects Available</li>
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <h6>ISBNs</h6>
+                                                                                <ul class="list-unstyled">
+                                                                                    @if (book?.isbn != null && book.isbn.Any())
+                                                                                    {
+                                                                                        @foreach (var isbn in book.isbn)
+                                                                                        {
+                                                                                            <li class="text-muted">@isbn</li>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <li class="text-muted">No ISBNs Available</li>
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <h6>Languages</h6>
+                                                                                <ul class="list-unstyled">
+                                                                                    @if (book?.language != null && book.language.Any())
+                                                                                    {
+                                                                                        @foreach (var language in book.language)
+                                                                                        {
+                                                                                            <li class="text-muted">@language</li>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <li class="text-muted">No Languages Available</li>
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer text-center">
+                                                                        <span class="text-muted">
+                                                                            Edition Count: @(book?.edition_count.ToString() ?? "N/A") | Format(s): 
+                                                                            @(book?.format != null && book.format.Any() ? string.Join(", ", book.format) : "No Formats Available")
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <AuthorizeView>
+                                                    <Authorized>
+                                                        @if(book != null){
+                                                            if(Favorites.Where(p => p.Book != null).Any(p => p.Book?.key.Equals(book.key) ?? false)){
+                                                                <button class="btn btn-outline-success"
+                                                                @onclick='async () => 
+                                                                {
+                                                                    await searchBookDb
+                                                                        .RemoveFromFavorite(
+                                                                            Favorites
+                                                                                .Where(p => p.Book != null && p.Book.key.Equals(book.key))
+                                                                                .First()
+                                                                        );
+                                                                    await ReloadFavorites(); 
+                                                                    StateHasChanged(); 
+                                                                }'>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+                                                                        <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                                    </svg>
+                                                                </button>
+                                                            }else{
+                                                                <button class="btn btn-outline-danger" @onclick='async () => {await AddToFavorites(book?.key ?? "", context.User.Identity?.Name ?? ""); await ReloadFavorites(); StateHasChanged(); }'>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                                                                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+                                                                    </svg>
+                                                                </button>
+                                                            }
+                                                        }
+                                                    </Authorized>
+                                                    <NotAuthorized>
+                                                        <a class="btn btn-outline-danger" href="/Account/Login">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+                                                            </svg>
+                                                        </a>
+                                                    </NotAuthorized>
+                                                </AuthorizeView>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col my-3">
+                <h2>Movies found @Movies.Count</h2>
+                @if(Movies.Count > 0){
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        @foreach(var movie in Movies){
+                            if(movie != null){
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="row g-0">
+                                            <div class="col-md-4">
+                                                @if(movie.Image != null && !String.IsNullOrEmpty(movie.Image.Original)){
+                                                    <img src="@movie.Image.Original" class="img-fluid rounded-start" alt="@(movie.Name ?? "Undefined")">
+                                                }else{
+                                                    <img src="/img/notfound.jpg" class="img-fluid rounded-start" alt="@(movie.Name ?? "Undefined")">
+                                                }
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@(movie.Name ?? "Undefined")</h5>
+                                                    <p class="card-text">Note: <span class='badge bg-@(movie.Rating.Average <= 3 ? "danger" : movie.Rating.Average >= 4.5 ? "success" : "warning")'>@movie.Rating.Average</span></p>
+                                                    <div class="btn-group">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#movieInfoModal@(movie.Id)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                                                            </svg>
+                                                        </button>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="movieInfoModal@(movie.Id)" tabindex="-1" aria-labelledby="movieInfoModal@(movie.Id)-Label" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-scrollable modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="movieInfoModal@(movie.Id)-Label">Modal title</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container my-4">
+                                                                        <div class="card shadow">
+                                                                            <div class="card-header bg-primary text-white">
+                                                                                <h4>@(movie?.Name ?? "Unknown Movie")</h4>
+                                                                                <h6 class="text-light">Language: @(movie?.Language ?? "Unknown")</h6>
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Genres</h6>
+                                                                                        <ul class="list-unstyled">
+                                                                                            @if (movie?.Genres != null && movie.Genres.Any())
+                                                                                            {
+                                                                                                @foreach (var genre in movie.Genres)
+                                                                                                {
+                                                                                                    <li class="text-muted">@genre</li>
+                                                                                                }
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <li class="text-muted">No Genres Available</li>
+                                                                                            }
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Schedule</h6>
+                                                                                        <p class="text-muted">Time: @(movie?.Schedule?.Time ?? "N/A")</p>
+                                                                                        <p class="text-muted">
+                                                                                            Days: 
+                                                                                            @if (movie?.Schedule?.Days != null && movie.Schedule.Days.Any())
+                                                                                            {
+                                                                                                @string.Join(", ", movie.Schedule.Days)
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <p>No Days Available</p>
+                                                                                            }
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Status</h6>
+                                                                                        <p class="text-muted">@(movie?.Status ?? "Unknown")</p>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Runtime</h6>
+                                                                                        <p class="text-muted">@(movie?.Runtime?.ToString() ?? "N/A" ) minutes</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Premiered</h6>
+                                                                                        <p class="text-muted">@(movie?.Premiered ?? "Unknown")</p>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Ended</h6>
+                                                                                        <p class="text-muted">@(movie?.Ended ?? "Ongoing")</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Rating</h6>
+                                                                                        <p class="text-muted">@(movie?.Rating?.Average?.ToString("F1") ?? "No Rating Available")</p>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Network</h6>
+                                                                                        <p class="text-muted">@(movie?.Network?.Name ?? "Unknown")</p>
+                                                                                        <p class="text-muted">
+                                                                                            Country: @(movie?.Network?.Country?.Name ?? "Unknown") (@(movie?.Network?.Country?.Code ?? "N/A"))
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-12">
+                                                                                        <h6>Summary</h6>
+                                                                                        <p class="text-muted">@((MarkupString)(movie?.Summary ?? "No Summary Available"))</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>External Links</h6>
+                                                                                        <ul class="list-unstyled">
+                                                                                            @if (!string.IsNullOrEmpty(movie?.Externals?.Imdb))
+                                                                                            {
+                                                                                                <li><a href="https://www.imdb.com/title/@movie.Externals.Imdb" target="_blank">IMDb</a></li>
+                                                                                            }
+                                                                                            @if (movie?.Externals?.Tvrage != null)
+                                                                                            {
+                                                                                                <li>TVRage ID: @movie.Externals.Tvrage</li>
+                                                                                            }
+                                                                                            @if (movie?.Externals?.Thetvdb != null)
+                                                                                            {
+                                                                                                <li>TheTVDB ID: @movie.Externals.Thetvdb</li>
+                                                                                            }
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Links</h6>
+                                                                                        <p>
+                                                                                            @if (!string.IsNullOrEmpty(movie?.Links?.Self?.Href))
+                                                                                            {
+                                                                                                <a href="@movie.Links.Self.Href" target="_blank">Official Page</a>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <span class="text-muted">No Official Page</span>
+                                                                                            }
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card-footer text-center">
+                                                                                <span class="text-muted">Last Updated: @(movie?.Updated > 0 ? DateTimeOffset.FromUnixTimeSeconds(movie.Updated).ToString("g") : "Unknown")</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <AuthorizeView>
+                                                            <Authorized>
+                                                                @if(movie != null){
+                                                                    @if(Favorites.Any(p => p.Movie?.Id.Equals(movie.Id) ?? false)){
+                                                                        <button class="btn btn-outline-success"
+                                                                        @onclick='async () => 
+                                                                        {
+                                                                            await searchMovieDb
+                                                                                .RemoveFromFavorite(
+                                                                                    Favorites
+                                                                                        .Where(p => p.Movie != null && p.Movie.Id == movie.Id)
+                                                                                        .First()
+                                                                                );
+                                                                            await ReloadFavorites(); 
+                                                                            StateHasChanged(); 
+                                                                        }'>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+                                                                                <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    }else{
+                                                                        <button class="btn btn-outline-danger" @onclick='async () => { await AddMovieToFavorites(movie.Id, context.User.Identity?.Name ?? ""); await ReloadFavorites(); StateHasChanged();}' >
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    }
+                                                                }
+                                                                
+                                                            </Authorized>
+                                                            <NotAuthorized>
+                                                                <a class="btn btn-outline-danger" href="/Account/Login">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                                                                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+                                                                    </svg>
+                                                                </a>
+                                                            </NotAuthorized>
+                                                        </AuthorizeView>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@code{
+    private string? UserId {get; set; }
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+    private string SearchString = "";
+    private bool Loading => Books.Count == 0 && Movies.Count == 0 && !String.IsNullOrEmpty(SearchString);
+    private bool Fail = false;
+    private List<Book> Books = new();
+    private List<Movie> Movies = new();
+    private List<Favorite> Favorites = new();
+    protected override async Task OnInitializedAsync(){
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        }
+    }
+            
+    private async Task AddToFavorites(string bookId, string userId){
+        try{
+            var book = Books.FirstOrDefault(p => p.key.Equals(bookId));
+            if(book != null)
+                await searchBookDb.AddToFavorite(book, userId);
+        }catch(Exception ex){
+
+        }
+        StateHasChanged();
+    }
+    private async Task AddMovieToFavorites(int movieId, string userId){
+        try{
+            var movie = Movies.FirstOrDefault(p => p.Id == movieId);
+            if(movie != null)
+                await searchMovieDb.AddToFavorite(movie, userId);
+        }catch(Exception ex){
+
+        }
+        StateHasChanged();
+    }
+    private async Task ReloadFavorites(){
+        if(!String.IsNullOrEmpty(UserId)){
+            Favorites = await searchBookDb.GetFavoritesAsync(UserId);
+            Favorites.AddRange(await searchMovieDb.GetFavoritesAsync(UserId));
+        }
+    }
+    private async Task GetBooksByInput(ChangeEventArgs? args){
+        try{
+            if(args != null){
+                string SearchText = args.Value?.ToString() ?? "";
+                SearchString = SearchText;
+                if(!String.IsNullOrEmpty(SearchText)){
+                    Books = await searchBookDb.GetBooks(SearchText);
+                    if(Books.Count == 0)
+                        Books = await searchBookDb.SearchBookByApi(SearchText);
+                    Movies = await searchMovieDb.GetMovies(SearchText);
+                    if(Movies.Count == 0)
+                        Movies = await searchMovieDb.SearchMovieByApi(SearchText);
+                }
+                if(Movies.Count == 0 && Books.Count == 0){
+                    Fail = true;
+                }else{
+                    Fail = false;
+                }
+                if(!String.IsNullOrEmpty(UserId)){
+                    Favorites = await searchBookDb.GetFavoritesAsync(UserId);
+                    Favorites.AddRange(await searchMovieDb.GetFavoritesAsync(UserId));
+                }
+            }
+        }catch(Exception ex){
+            
+        }
+        StateHasChanged();
+    }
+    private async Task GetApiResults(){
+        try{
+            Books = new();
+            Movies = new();
+            if(!String.IsNullOrEmpty(SearchString)){
+                Books = await searchBookDb.SearchBookByApi(SearchString);
+                Movies = await searchMovieDb.SearchMovieByApi(SearchString);
+                if(!String.IsNullOrEmpty(UserId)){
+                    Favorites = await searchBookDb.GetFavoritesAsync(UserId);
+                    Favorites.AddRange(await searchMovieDb.GetFavoritesAsync(UserId));
+                }
+            }
+        }catch(Exception ex){
+
+        }
+        StateHasChanged();
+    }
+}
