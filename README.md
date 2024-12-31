@@ -1,4 +1,4 @@
-# Running the Multi-Service Docker Application
+# Running Clipser Application
 
 This guide explains how to set up and run the services defined in the `docker-compose.yml` file on **Windows**, **Linux**, and **MacOS**.
 
