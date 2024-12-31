@@ -13,21 +13,43 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - mariadb_data:/usr/src/Clipser/mysql
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb", "-u", "clipser", "-pclipser_secure_password_1234.", "-e", "SELECT 1;"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: surrealdb
+    command: start --user root --pass root --bind 0.0.0.0:7979
+    ports:
+      - "7979:7979"
+    volumes:
+      - surrealdb_data:/data
+    healthcheck:
+      disable: true
 
   dotnet-app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: dotnet-app
-    depends_on:
-      - mariadb
     ports:
       - "5000:5000"
     environment:
-      ConnectionStrings__DefaultConnection: "Server=localhost;Database=Clipser;User=clipser;Password=clipser_secure_password_1234.;"
-    command: >
-      sh -c "dotnet ef database update && dotnet Clipser.dll"
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=mariadb;Port=3306;Database=Clipser;User=clipser;Password=clipser_secure_password_1234.
+      - ConnectionStrings__SurrealDB=Server=http://surrealdb:7979;Namespace=Clipser;Database=Books;Username=root;Password=root
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      surrealdb:
+        condition: service_started
+    restart: on-failure:3
 
 volumes:
   mariadb_data:
+  surrealdb_data:

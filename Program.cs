@@ -69,6 +69,7 @@ builder.Services.AddScoped<Recommendations>((provider) => {
     var context = provider.GetRequiredService<ISurrealDbClient>();
     return new(context);
 });
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
@@ -79,7 +80,11 @@ builder.WebHost.UseUrls("http://0.0.0.0:5000");
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 var app = builder.Build();
-
+using var scope = app.Services.CreateScope();
+using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+dbContext.Database.Migrate();
+dbContext.Dispose();
+scope.Dispose();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
