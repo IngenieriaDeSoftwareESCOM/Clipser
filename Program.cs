@@ -25,6 +25,31 @@ builder.Services.AddAuthentication(options =>
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
     .AddIdentityCookies();
+builder.Services.ConfigureApplicationCookie(options =>{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        // Check if the request is for an API endpoint
+        if (context.Request.Path.StartsWithSegments("/api"))
+        {
+            context.Response.StatusCode = 401; // Return 401 for API requests
+            return Task.CompletedTask;
+        }
+        // Default behavior (redirect to login for components)
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
+
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        if (context.Request.Path.StartsWithSegments("/api"))
+        {
+            context.Response.StatusCode = 403; // Return 403 for API requests
+            return Task.CompletedTask;
+        }
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
+});
 builder.Services.AddAuthentication()
    .AddGoogle(options =>
    {
@@ -101,6 +126,7 @@ app.UseHttpsRedirection();
 
 
 app.UseAntiforgery();
+app.MapControllers(); // Enables attribute-routing for API/MVC controllers
 
 app.MapStaticAssets();
 app.UseStaticFiles();
