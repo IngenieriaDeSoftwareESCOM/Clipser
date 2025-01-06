@@ -65,6 +65,13 @@ builder.Services.AddScoped<SearchMovie>((provider) => {
     var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
     return new(context, logger, userManager);
 });
+builder.Services.AddScoped<SearchArtisiansAndMusic>((provider) => {
+    var context = provider.GetRequiredService<ISurrealDbClient>();
+    var logger = provider.GetRequiredService<ILogger<SearchArtisiansAndMusic>>();
+    var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
+    string apiKey = builder.Configuration["ExternalAuth:Shazam:ApiKey"] ?? "";
+    return new(context, logger, userManager, apiKey);
+});
 builder.Services.AddScoped<Recommendations>((provider) => {
     var context = provider.GetRequiredService<ISurrealDbClient>();
     return new(context);
@@ -82,7 +89,12 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 var app = builder.Build();
 using var scope = app.Services.CreateScope();
 using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-dbContext.Database.Migrate();
+try{
+    dbContext.Database.Migrate();
+}catch(Exception ex){
+    
+}
+
 dbContext.Dispose();
 scope.Dispose();
 // Configure the HTTP request pipeline.
