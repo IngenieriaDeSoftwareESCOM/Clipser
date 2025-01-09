@@ -72,7 +72,7 @@ public class Book : Record
     public List<string> subject_key { get; set; }
     public List<string> time_key { get; set; }
 }
-public class Root
+public class RootBook
 {
     public int numFound { get; set; }
     public int start { get; set; }

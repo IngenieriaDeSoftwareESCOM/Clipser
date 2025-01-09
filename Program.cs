@@ -65,6 +65,13 @@ builder.Services.AddScoped<SearchMovie>((provider) => {
     var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
     return new(context, logger, userManager);
 });
+builder.Services.AddScoped<SearchArtisiansAndMusic>((provider) => {
+    var context = provider.GetRequiredService<ISurrealDbClient>();
+    var logger = provider.GetRequiredService<ILogger<SearchArtisiansAndMusic>>();
+    var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
+    string apiKey = builder.Configuration["ExternalAuth:Shazam:ApiKey"] ?? "";
+    return new(context, logger, userManager, apiKey);
+});
 builder.Services.AddScoped<Recommendations>((provider) => {
     var context = provider.GetRequiredService<ISurrealDbClient>();
     return new(context);
@@ -75,14 +82,22 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddSurreal(builder.Configuration.GetConnectionString("SurrealDB") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found."));
 
-builder.WebHost.UseUrls("http://0.0.0.0:5000");
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000); // Listen on all IPs
+});
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 var app = builder.Build();
 using var scope = app.Services.CreateScope();
 using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-dbContext.Database.Migrate();
+try{
+    dbContext.Database.Migrate();
+}catch(Exception ex){
+    
+}
+
 dbContext.Dispose();
 scope.Dispose();
 // Configure the HTTP request pipeline.

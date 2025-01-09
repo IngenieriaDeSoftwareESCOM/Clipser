@@ -1,0 +1,557 @@
+Using launch settings from /mnt/ssd1tb/Codigos/IngenieriaSoftware/Clipser/Properties/launchSettings.json...
+Building...
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='Clipser' AND TABLE_NAME='__EFMigrationsHistory';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='Clipser' AND TABLE_NAME='__EFMigrationsHistory';
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT `MigrationId`, `ProductVersion`
+      FROM `__EFMigrationsHistory`
+      ORDER BY `MigrationId`;
+info: Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20241230141334_Initial'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER DATABASE CHARACTER SET utf8mb4;
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE `AspNetRoles` (
+          `Id` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+          `Name` varchar(256) CHARACTER SET utf8mb4 NULL,
+          `NormalizedName` varchar(256) CHARACTER SET utf8mb4 NULL,
+          `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+          CONSTRAINT `PK_AspNetRoles` PRIMARY KEY (`Id`)
+      ) CHARACTER SET=utf8mb4;
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://0.0.0.0:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /mnt/ssd1tb/Codigos/IngenieriaSoftware/Clipser
+warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+      Failed to determine the https port for redirect.
+info: SurrealDB.Connection[1914475338]
+      Attempting to connect to 'http://localhost:7979'.
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 169.1455ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 211.8455ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'version' executed successfully.
+      Parameters: 
+      Execution time: 378ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 74.9398ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 75.2953ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 86ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      RETURN TRUE
+      Parameters: 
+      Execution time: 88ms
+info: SurrealDB.Connection[1881574536]
+      Successfully connected to 'http://localhost:7979'.
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 90.751ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 91.0138ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 720ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 1
+      Parameters: 
+      Execution time: 729ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 124.4568ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 124.6261ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 135ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 91
+      Parameters: 
+      Execution time: 135ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 162.9091ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 163.6148ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 177ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 181
+      Parameters: 
+      Execution time: 177ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 197.0605ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 197.2774ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 209ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 271
+      Parameters: 
+      Execution time: 209ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 152.1984ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 152.4093ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 155ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 361
+      Parameters: 
+      Execution time: 155ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 94.2808ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 94.4535ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 99ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 451
+      Parameters: 
+      Execution time: 99ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 96.5123ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 96.5985ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 101ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 541
+      Parameters: 
+      Execution time: 101ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 97.0091ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 97.116ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 102ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 631
+      Parameters: 
+      Execution time: 102ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 142.1089ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 142.4624ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 146ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 721
+      Parameters: 
+      Execution time: 146ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 279.323ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 279.5904ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 282ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 811
+      Parameters: 
+      Execution time: 282ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 180.186ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 180.3843ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 182ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 901
+      Parameters: 
+      Execution time: 182ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 121.8662ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 122.1801ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 123ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM book LIMIT 90 START 991
+      Parameters: 
+      Execution time: 123ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 58.061ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 58.2032ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 59ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM movie LIMIT 90 START 1
+      Parameters: 
+      Execution time: 59ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 86.9731ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 87.2154ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 88ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM movie LIMIT 90 START 91
+      Parameters: 
+      Execution time: 88ms
+fail: Clipser.Components.Repositories.SearchMovie[0]
+      Object reference not set to an instance of an object.
+info: Clipser.Components.Repositories.SearchMovie[0]
+      Movies fetched 10
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 93.2241ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 93.4827ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 94ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:71119 LIMIT 1
+      Parameters: 
+      Execution time: 94ms
+fail: Clipser.Components.Repositories.SearchMovie[0]
+      Exception has been thrown by the target of an invocation.
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 207.3583ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 207.5861ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 208ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:13555 LIMIT 1
+      Parameters: 
+      Execution time: 208ms
+fail: Clipser.Components.Repositories.SearchMovie[0]
+      Exception has been thrown by the target of an invocation.
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 209.5138ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 209.6481ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 210ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:10275 LIMIT 1
+      Parameters: 
+      Execution time: 210ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 229.099ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 229.4866ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 230ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:69960 LIMIT 1
+      Parameters: 
+      Execution time: 231ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 237.129ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 237.4435ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 238ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:60049 LIMIT 1
+      Parameters: 
+      Execution time: 238ms
+fail: Clipser.Components.Repositories.SearchMovie[0]
+      Exception has been thrown by the target of an invocation.
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 235.7723ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 235.9527ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 236ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:65892 LIMIT 1
+      Parameters: 
+      Execution time: 236ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+fail: Clipser.Components.Repositories.SearchMovie[0]
+      Exception has been thrown by the target of an invocation.
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 262.6742ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 260.6247ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 260.856ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 262.901ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 263ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:36832 LIMIT 1
+      Parameters: 
+      Execution time: 263ms
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 261ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:77337 LIMIT 1
+      Parameters: 
+      Execution time: 261ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[100]
+      Sending HTTP request POST http://localhost:7979/rpc
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 272.2643ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 272.4244ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 273ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:69595 LIMIT 1
+      Parameters: 
+      Execution time: 273ms
+fail: Clipser.Components.Repositories.SearchMovie[0]
+      Exception has been thrown by the target of an invocation.
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 289.6287ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 289.9192ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 290ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT * FROM track LIMIT 90 START 1
+      Parameters: 
+      Execution time: 291ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 314.3943ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 314.5397ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'query' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 315ms
+info: SurrealDB.Query[878541766]
+      Query executed successfully.
+      SELECT id FROM movie WHERE id = movie:47508 LIMIT 1
+      Parameters: 
+      Execution time: 315ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 99.0359ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 99.3114ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'create' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 106ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 89.6188ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 89.8214ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'update' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 92ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 81.7118ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 81.9116ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'update' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 82ms
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.ClientHandler[101]
+      Received HTTP response headers after 84.1676ms - 200
+info: System.Net.Http.HttpClient.[SurrealDB] http://localhost:7979/.LogicalHandler[101]
+      End processing HTTP request after 84.4675ms - 200
+info: SurrealDB.Method[1380870209]
+      Method 'update' executed successfully.
+      Parameters: [?, ?]
+      Execution time: 85ms

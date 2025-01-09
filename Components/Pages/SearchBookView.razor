@@ -449,6 +449,206 @@
                     </div>
                 }
             </div>
+            <div class="col my-3">
+                <h2>Tracks found @Tracks.Count</h2>
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        @foreach(var track in Tracks){
+                            <div class="col h-100">
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            @if(!String.IsNullOrEmpty(track.images?.coverart)){
+                                                <img src="@track.images.coverart" class="img-fluid rounded-start" alt="@track.title">
+                                            }else{
+                                                <img src="/img/notfound.jpg" class="img-fluid rounded-start" alt="@track.title">
+                                            }
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">@track.title</h5>
+                                                <h6 class="card-subtitle mb-2 text-body-secondary">@track.subtitle</h6>
+                                                <p class="card-text">
+                                                    @if(track.artists != null && track.artists.Any()){
+                                                        <small class="text-muted">
+                                                            Artists: @string.Join(", ", track.artists.Select(a => a.ToString()))
+                                                        </small>
+                                                    }
+                                                </p>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#trackInfoModal@(track.key.Replace('/', '_'))">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                                                        </svg>
+                                                    </button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="trackInfoModal@(track.key.Replace('/', '_'))" tabindex="-1" aria-labelledby="trackInfoModal@(track.key.Replace('/', '_'))-Label" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-scrollable modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="trackInfoModal@(track.key.Replace('/', '_'))-Label">@track.title</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container my-4">
+                                                                        <div class="card shadow">
+                                                                            <div class="card-header bg-primary text-white">
+                                                                                <h4>@(track?.title ?? "Unknown Title")</h4>
+                                                                                <h6 class="text-light">@(!string.IsNullOrEmpty(track?.subtitle) ? track.subtitle : "No Subtitle Available")</h6>
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Artists</h6>
+                                                                                        <ul class="list-unstyled">
+                                                                                            @if (track?.artists != null && track.artists.Any())
+                                                                                            {
+                                                                                                @foreach (var artist in track.artists)
+                                                                                                {
+                                                                                                    <li class="text-muted"><i class="bi bi-person-fill"></i> @(artist?.ToString() ?? "Unknown Artist")</li>
+                                                                                                }
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <li class="text-muted">No Artists Available</li>
+                                                                                            }
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Providers</h6>
+                                                                                        <ul class="list-unstyled">
+                                                                                            @if (track?.hub?.providers != null && track.hub.providers.Any())
+                                                                                            {
+                                                                                                @foreach (var provider in track.hub.providers)
+                                                                                                {
+                                                                                                    <li class="text-muted"><i class="bi bi-music-note"></i> @(provider.caption ?? "Unknown Provider")</li>
+                                                                                                }
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <li class="text-muted">No Providers Available</li>
+                                                                                            }
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mb-3">
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Type</h6>
+                                                                                        <p class="text-muted">@(track?.type ?? "N/A")</p>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <h6>Layout</h6>
+                                                                                        <p class="text-muted">@(track?.layout ?? "N/A")</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                @if (track?.hub != null)
+                                                                                {
+                                                                                    <div class="row mb-3">
+                                                                                        <div class="col-12">
+                                                                                            <h6>Actions</h6>
+                                                                                            <div class="list-group">
+                                                                                                @if (track.hub.actions != null && track.hub.actions.Any())
+                                                                                                {
+                                                                                                    @foreach (var action in track.hub.actions)
+                                                                                                    {
+                                                                                                        <a href="@action.uri" class="list-group-item list-group-item-action">@action.name</a>
+                                                                                                    }
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <p class="text-muted">No Actions Available</p>
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                }
+                                                                                @if (track?.share != null)
+                                                                                {
+                                                                                    <div class="row">
+                                                                                        <div class="col-12">
+                                                                                            <h6>Share Options</h6>
+                                                                                            <div class="btn-group">
+                                                                                                @if (!string.IsNullOrEmpty(track.share.twitter))
+                                                                                                {
+                                                                                                    <a href="@track.share.twitter" class="btn btn-outline-primary">Twitter</a>
+                                                                                                }
+                                                                                                @if (!string.IsNullOrEmpty(track.share.href))
+                                                                                                {
+                                                                                                    <a href="@track.share.href" class="btn btn-outline-secondary">Share Link</a>
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                }
+                                                                            </div>
+                                                                            <div class="card-footer text-center">
+                                                                                <span class="text-muted">
+                                                                                    URL: <a href="@track?.url">@track?.url</a>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <AuthorizeView>
+                                                        <Authorized>
+                                                            @if(track != null){
+                                                                if(Favorites.Where(p => p.Track != null).Any(p => p.Track?.key.Equals(track.key) ?? false)){
+                                                                    <button class="btn btn-outline-success"
+                                                                    @onclick='async () => 
+                                                                    {
+                                                                        await searchMusic
+                                                                            .RemoveTrackFromFavorite(
+                                                                                Favorites
+                                                                                    .Where(p => p.Track != null && p.Track.key.Equals(track.key))
+                                                                                    .First()
+                                                                            );
+                                                                        await ReloadFavorites(); 
+                                                                        StateHasChanged(); 
+                                                                    }'>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list" viewBox="0 0 16 16">
+                                                                            <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                                                                            <path fill-rule="evenodd" d="M12 3v10h-1V3h1z"/>
+                                                                            <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1V2.82z"/>
+                                                                            <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                }else{
+                                                                    <button class="btn btn-outline-danger" @onclick='async () => {await searchMusic.AddTrackToFavorite(track, context.User.Identity?.Name ?? ""); await ReloadFavorites(); StateHasChanged(); }'>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note" viewBox="0 0 16 16">
+                                                                            <path d="M9 13c0 1.105-1.12 2-2.5 2S4 14.105 4 13s1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                                                                            <path fill-rule="evenodd" d="M9 3v10H8V3h1z"/>
+                                                                            <path d="M8 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 13 2.22V4L8 5V2.82z"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                }
+                                                            }
+                                                        </Authorized>
+                                                        <NotAuthorized>
+                                                            <a class="btn btn-outline-danger" href="/Account/Login">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note" viewBox="0 0 16 16">
+                                                                    <path d="M9 13c0 1.105-1.12 2-2.5 2S4 14.105 4 13s1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                                                                    <path fill-rule="evenodd" d="M9 3v10H8V3h1z"/>
+                                                                    <path d="M8 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 13 2.22V4L8 5V2.82z"/>
+                                                                </svg>
+                                                            </a>
+                                                        </NotAuthorized>
+                                                    </AuthorizeView>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+            </div>
         </div>
     }
 </div>
@@ -465,6 +665,8 @@
     private List<Book> Books = new();
     private List<Movie> Movies = new();
     private List<Favorite> Favorites = new();
+    private List<Artist2> Artists = new();
+    private List<Track> Tracks = new();
     protected override async Task OnInitializedAsync(){
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -512,6 +714,16 @@
                     Movies = await searchMovieDb.GetMovies(SearchText);
                     if(Movies.Count == 0)
                         Movies = await searchMovieDb.SearchMovieByApi(SearchText);
+                    //Tracks = await searchMusic.GetTracks(SearchText);
+                    /*Artists = await searchMusic.GetArtists(SearchText);
+                    if(Tracks.Count == 0){
+                        var (_, tracks) = await searchMusic.SearchByApi(SearchText);
+                        Tracks = tracks;
+                    }
+                    if(Artists.Count == 0){
+                        var (artists, _) = await searchMusic.SearchByApi(SearchText);
+                        Artists = artists;
+                    }*/
                 }
                 if(Movies.Count == 0 && Books.Count == 0){
                     Fail = true;
@@ -535,10 +747,13 @@
             if(!String.IsNullOrEmpty(SearchString)){
                 Books = await searchBookDb.SearchBookByApi(SearchString);
                 Movies = await searchMovieDb.SearchMovieByApi(SearchString);
+                /*var (a, t) = await searchMusic.SearchByApi(SearchString);
+                Tracks = t;
+                Artists = a;
                 if(!String.IsNullOrEmpty(UserId)){
                     Favorites = await searchBookDb.GetFavoritesAsync(UserId);
                     Favorites.AddRange(await searchMovieDb.GetFavoritesAsync(UserId));
-                }
+                }*/
             }
         }catch(Exception ex){
 

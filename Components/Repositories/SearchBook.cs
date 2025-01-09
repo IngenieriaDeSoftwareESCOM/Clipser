@@ -53,7 +53,7 @@ public class SearchBook{
             var response = await client.GetAsync($"https://openlibrary.org/search.json?title={query}");
             if(response.IsSuccessStatusCode){
                 var raw = await response.Content.ReadAsStringAsync();
-                var books = JsonConvert.DeserializeObject<Root>(raw);
+                var books = JsonConvert.DeserializeObject<RootBook>(raw);
                 if(books?.docs != null){
                     books.docs.ForEach(p => p.Id = ("book", p.key));
                     await _applicationDbContext.Insert("book", books.docs);
