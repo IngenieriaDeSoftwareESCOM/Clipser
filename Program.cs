@@ -82,7 +82,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddSurreal(builder.Configuration.GetConnectionString("SurrealDB") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found."));
 
-builder.WebHost.UseUrls("http://0.0.0.0:5000");
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000); // Listen on all IPs
+});
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 

@@ -23,13 +23,8 @@ public class SearchArtisiansAndMusic{
             List<Artist2> artists = new();
             bool ended = false;
             int start = 1;
-            while(!ended){
-                var result =  await _applicationDbContext.RawQuery($"SELECT * FROM artist LIMIT 90 START {start}");
-                var anyArtist = result.GetValue<List<Artist2>>(0);
-                start += 90;
-                if(anyArtist?.Count > 0) artists.AddRange(anyArtist);
-                else ended = true;
-            }
+            var result1 = await _applicationDbContext.Select<Artist2>("track");
+            artists = result1.ToList();
             artists = artists.Where(p => 
                 p.name.Contains(textIn) || p.adamid.Contains(textIn)
             ).ToList();
@@ -45,13 +40,17 @@ public class SearchArtisiansAndMusic{
             List<Track> tracks = new();
             bool ended = false;
             int start = 1;
-            while(!ended){
+            _logger.LogCritical("Trying to fetch data from db");
+            var result1 = await _applicationDbContext.Select<Track>("track");
+            tracks = result1.ToList();
+            /*while(!ended){
                 var result =  await _applicationDbContext.RawQuery($"SELECT * FROM track LIMIT 90 START {start}");
                 var anyTrack = result.GetValue<List<Track>>(0);
+                _logger.LogCritical($"List is null? {(anyTrack == null)} - {anyTrack?.Count}");
                 start += 90;
-                if(anyTrack?.Count > 0) tracks.AddRange(anyTrack);
+                if(anyTrack?.Count > 0 && anyTrack != null) tracks.AddRange(anyTrack);
                 else ended = true;
-            }
+            }*/
             tracks = tracks.Where(p => 
                 p.subtitle.Contains(textIn) ||
                 p.key.Contains(textIn) ||
@@ -81,30 +80,35 @@ public class SearchArtisiansAndMusic{
             };
             var response = await client.SendAsync(request);
             if(response.IsSuccessStatusCode){
-                var raw = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<Root>(raw);
-                List<Artist2> artists = new();
-                List<Track> tracks = new();
-                if(data?.artists?.artists?.Count > 0){
-                    foreach(var t in data.artists.artists){
-                        foreach(var hit in t.hits){
-                            artists.Add(hit.artist);
+                try{
+                    var raw = await response.Content.ReadAsStringAsync();
+                    _logger.LogCritical(raw);
+                    /*var data = JsonConvert.DeserializeObject<Root>(raw);
+                    List<Artist2> artists = new();
+                    List<Track> tracks = new();
+                    if(data?.artists?.artists?.Count > 0){
+                        foreach(var t in data.artists.artists){
+                            foreach(var hit in t.hits){
+                                artists.Add(hit.artist);
+                            }
                         }
+                        await _applicationDbContext.Insert("artist", artists);
                     }
-                    await _applicationDbContext.Insert("artist", artists);
-                }
-                if(data?.tracks?.hits?.Count > 0){
-                    
-                    foreach(var t in data.tracks.hits){
-                        var x = t.track;
-                        tracks.Add(x);
+                    if(data?.tracks?.hits?.Count > 0){
+                        
+                        foreach(var t in data.tracks.hits){
+                            var x = t.track;
+                            tracks.Add(x);
+                        }
+                        await _applicationDbContext.Insert("track", tracks);
                     }
-                    await _applicationDbContext.Insert("track", tracks);
+                    if(artists == null && tracks == null){
+                        _logger.LogWarning("The search return null");
+                    }
+                    return (artists, tracks);*/
+                }catch(Exception ex){
+                    _logger.LogCritical(ex.Message);
                 }
-                if(artists == null && tracks == null){
-                    _logger.LogWarning("The search return null");
-                }
-                return (artists, tracks);
             }
             _logger.LogWarning("Something fail while fetching data");
         }catch(Exception ex){
