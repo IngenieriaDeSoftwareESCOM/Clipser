@@ -15,6 +15,10 @@ public class Action
         public string adamid { get; set; }
         public List<Hit> hits { get; set; }
     }
+    public class Artist3 {
+        public string id { get; set; }
+        public string adamid { get; set; }
+    }
 
     public class Artist2: Record
     {
@@ -107,7 +111,7 @@ public class Action
         public Share share { get; set; }
         public Images images { get; set; }
         public Hub hub { get; set; }
-        public List<Artist> artists { get; set; }
+        public List<Artist3> artists { get; set; }
         public string url { get; set; }
     }
     public class Artists{

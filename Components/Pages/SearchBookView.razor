@@ -714,8 +714,8 @@
                     Movies = await searchMovieDb.GetMovies(SearchText);
                     if(Movies.Count == 0)
                         Movies = await searchMovieDb.SearchMovieByApi(SearchText);
-                    //Tracks = await searchMusic.GetTracks(SearchText);
-                    /*Artists = await searchMusic.GetArtists(SearchText);
+                    Tracks = await searchMusic.GetTracks(SearchText);
+                    Artists = await searchMusic.GetArtists(SearchText);
                     if(Tracks.Count == 0){
                         var (_, tracks) = await searchMusic.SearchByApi(SearchText);
                         Tracks = tracks;
@@ -723,7 +723,7 @@
                     if(Artists.Count == 0){
                         var (artists, _) = await searchMusic.SearchByApi(SearchText);
                         Artists = artists;
-                    }*/
+                    }
                 }
                 if(Movies.Count == 0 && Books.Count == 0){
                     Fail = true;
@@ -747,13 +747,13 @@
             if(!String.IsNullOrEmpty(SearchString)){
                 Books = await searchBookDb.SearchBookByApi(SearchString);
                 Movies = await searchMovieDb.SearchMovieByApi(SearchString);
-                /*var (a, t) = await searchMusic.SearchByApi(SearchString);
+                var (a, t) = await searchMusic.SearchByApi(SearchString);
                 Tracks = t;
                 Artists = a;
                 if(!String.IsNullOrEmpty(UserId)){
                     Favorites = await searchBookDb.GetFavoritesAsync(UserId);
                     Favorites.AddRange(await searchMovieDb.GetFavoritesAsync(UserId));
-                }*/
+                }
             }
         }catch(Exception ex){
 

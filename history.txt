@@ -1,0 +1,4 @@
+#V2
+USE NS Clipser DB Books
+SELECT * FROM book;
+SELECT * FROM track;
